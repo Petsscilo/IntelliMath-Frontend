@@ -1,0 +1,24 @@
+add-lesson.html
+add-quiz.html
+add-student.html
+admin-report.html
+ai-chat.html
+dashboard-admin.html
+dashboard-student.html
+forgot-password.html
+gamification.html
+index.html
+lesson.html
+lessons.html
+LICENSE
+live-tutoring.html
+login.html
+manage-student.html
+output.txt
+quiz.html
+README.md
+Reset Password page.html
+script.js
+signup.html
+style.css
+view-students.html
