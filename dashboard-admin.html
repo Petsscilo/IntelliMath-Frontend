@@ -17,33 +17,32 @@
     }
   </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex relative" style="background-color: black;" >
+<body class="bg-gray-100 min-h-screen relative">
 
-  <!-- ☰ Hamburger Button -->
+  <!-- ☰ Hamburger -->
   <button id="menuBtn" class="absolute top-4 left-6 text-3xl z-50 md:hidden">☰</button>
 
   <!-- 🔵 Sidebar -->
-  <aside id="sidebar" class="sidebar sidebar-hidden md:sidebar-visible fixed md:static top-0 left-0 h-full w-64 bg-blue-800 text-white p-6 z-40" style="background-color: rgb(27, 4, 4);">
+  <aside id="sidebar" class="sidebar sidebar-hidden md:sidebar-visible fixed md:static top-0 left-0 h-full w-64 bg-blue-800 text-white p-6 z-40">
     <h2 class="text-2xl font-bold mb-8">IntelliMath Admin</h2>
     <nav class="flex flex-col space-y-4">
       <a href="dashboard-admin.html" class="hover:text-yellow-300">📊 Dashboard</a>
       <a href="add-lesson.html" class="hover:text-yellow-300">➕ Add Lesson</a>
       <a href="add-quiz.html" class="hover:text-yellow-300">📝 Add Quiz</a>
       <a href="view-students.html" class="hover:text-yellow-300">👥 View Students</a>
-      <a href="admin/reports.html" class="hover:text-yellow-300">📈 Reports</a>
+      <a href="admin-report.html" class="hover:text-yellow-300">📈 Reports</a>
+      <a href="live-tutoring.html" class="hover:text-yellow-300">🎥 Live Tutoring</a>
       <a href="#" onclick="logout()" class="text-red-300 hover:text-red-100">🚪 Logout</a>
     </nav>
   </aside>
 
   <!-- 🟢 Main Content -->
   <main class="flex-1 p-6 md:ml-64">
-    <!-- 👋 Welcome Message -->
-    <div class="bg-white shadow-md rounded-lg p-6 mb-8 text-center">
+    <div class="bg-white shadow-lg rounded-lg p-8 mb-8 text-center">
       <h1 id="welcomeText" class="text-3xl font-bold text-blue-700">Hi Admin 👋</h1>
       <p class="text-gray-600 mt-1">Welcome to the IntelliMath admin panel</p>
     </div>
 
-    <!-- ⚡ Admin Actions -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
       <a href="add-lesson.html" class="bg-green-100 hover:bg-green-200 transition p-6 rounded-lg shadow text-center">
         <h3 class="text-xl font-bold text-green-800">➕ Add Lesson</h3>
@@ -61,10 +60,14 @@
         <h3 class="text-xl font-bold text-purple-800">📈 View Reports</h3>
         <p class="text-sm text-gray-600">Analyze data & export stats</p>
       </a>
+      <a href="live-tutoring.html" class="bg-pink-100 hover:bg-pink-200 transition p-6 rounded-lg shadow text-center col-span-1 sm:col-span-2">
+        <h3 class="text-xl font-bold text-pink-800">🎥 Live Tutoring</h3>
+        <p class="text-sm text-gray-600">Manage or join live tutoring sessions</p>
+      </a>
     </div>
   </main>
 
-  <!-- 🔧 Script -->
+  <!-- 🔧 Scripts -->
   <script>
     const menuBtn = document.getElementById("menuBtn");
     const sidebar = document.getElementById("sidebar");
@@ -75,7 +78,7 @@
     });
 
     document.addEventListener("click", (e) => {
-      if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+      if (!sidebar.contains(e.target) && !menuBtn.contains(e.target) && sidebar.classList.contains("sidebar-visible")) {
         sidebar.classList.add("sidebar-hidden");
         sidebar.classList.remove("sidebar-visible");
       }
