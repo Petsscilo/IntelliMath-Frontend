@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Tutor – IntelliMath</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <script defer src="script.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+  <!-- 🧠 AI Tutor Chat Container -->
+  <div class="max-w-3xl mx-auto mt-10 bg-white shadow-md rounded-lg p-6 flex flex-col h-[90vh]">
+
+    <!-- 🔵 Header -->
+    <h2 class="text-2xl font-bold mb-4 text-blue-600">🤖 IntelliMath AI Tutor</h2>
+
+    <!-- 💬 Chat Box -->
+    <div id="chatBox" class="flex-1 overflow-y-auto mb-4 p-4 bg-gray-50 rounded border">
+      <!-- Example message -->
+      <!-- 
+      <div class="mb-2 text-sm text-gray-700"><strong>You:</strong> What is 5 + 5?</div>
+      <div class="mb-2 text-sm text-green-700"><strong>AI:</strong> 5 + 5 equals 10.</div>
+      -->
+    </div>
+
+    <!-- ✏️ Input Form -->
+    <form id="chatForm" class="flex gap-2">
+      <input type="text" id="chatInput" placeholder="Ask your math question..." class="flex-1 p-3 border rounded focus:outline-none"/>
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Send</button>
+    </form>
+  </div>
+
+</body>
+</html>

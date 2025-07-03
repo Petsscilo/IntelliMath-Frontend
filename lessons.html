@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lessons – IntelliMath</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    .sidebar {
+      transition: transform 0.3s ease;
+    }
+    .sidebar-hidden {
+      transform: translateX(-100%);
+    }
+    .sidebar-visible {
+      transform: translateX(0);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex relative" style="background-color: rgb(18, 17, 17);">
+
+  <!-- ☰ Hamburger (Mobile) -->
+  <button id="menuBtn" class="absolute top-4 left-4 text-white text-3xl z-50 md:hidden">☰</button>
+
+  <!-- 🔵 Sidebar -->
+  <aside id="sidebar" class="sidebar sidebar-hidden fixed md:static top-0 left-0 h-full w-64 bg-blue-700 text-white flex flex-col p-6 space-y-4 z-40">
+    <h2 class="text-2xl font-bold mb-6">IntelliMath</h2>
+    <nav class="flex flex-col gap-4">
+      <a href="dashboard-student.html" class="hover:text-yellow-300">🏠 Dashboard</a>
+      <a href="lessons.html" class="hover:text-yellow-300">📘 Lessons</a>
+      <a href="quiz.html" class="hover:text-yellow-300">📝 Quizzes</a>
+      <a href="ai-chat.html" class="hover:text-yellow-300">🤖 AI Tutor</a>
+      <a href="you.html" class="hover:text-yellow-300">🙍‍♂️ You</a>
+      <a href="gamification.html" class="hover:text-yellow-300">🎖️ Gamification</a>
+      <a href="#" onclick="logout()" class="text-red-300 hover:text-red-100">🚪 Logout</a>
+    </nav>
+  </aside>
+
+  <!-- 🟢 Main Content -->
+  <main class="flex-1 p-6 md:ml-64">
+    <!-- 👋 Welcome -->
+    <div class="mb-6" style="text-align: center;">
+      <h1 id="welcomeText" class="text-2xl semibold" style="color: aliceblue;">Hi Student 👋</h1>
+      <p class="text-gray-500 mt-1">Pick a lesson to start learning.</p>
+    </div>
+
+    <!-- 📘 Lessons List -->
+    <div id="lessonsList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- JavaScript will fill in lessons -->
+    </div>
+  </main>
+
+  <!-- 🧠 Script -->
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const menuBtn = document.getElementById("menuBtn");
+
+    menuBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("sidebar-hidden");
+      sidebar.classList.toggle("sidebar-visible");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+        sidebar.classList.remove("sidebar-visible");
+        sidebar.classList.add("sidebar-hidden");
+      }
+    });
+
+    // Set welcome text
+    const username = localStorage.getItem("username") || "Student";
+    document.getElementById("welcomeText").textContent = `Hi ${username} 👋`;
+
+    // Dummy lessons data
+    const lessons = [
+      { id: 1, title: "Algebra Basics", description: "Understanding variables and expressions." },
+      { id: 2, title: "Fractions & Decimals", description: "Converting, simplifying and operations." },
+      { id: 3, title: "Geometry", description: "Shapes, angles and measurements." },
+      { id: 4, title: "Linear Equations", description: "Solving for x." },
+      { id: 5, title: "Probability", description: "Chance, likelihood and predictions." },
+    ];
+
+    const container = document.getElementById("lessonsList");
+
+    lessons.forEach(lesson => {
+      const div = document.createElement("div");
+      div.className = "bg-white p-4 rounded shadow hover:shadow-lg transition";
+      div.innerHTML = `
+        <h3 class="text-xl font-semibold text-blue-700">${lesson.title}</h3>
+        <p class="text-gray-600 mt-2">${lesson.description}</p>
+        <a href="lesson.html?id=${lesson.id}" class="mt-4 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Start Lesson</a>
+      `;
+      container.appendChild(div);
+    });
+
+    // Logout
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>

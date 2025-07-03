@@ -1,0 +1,53 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login – IntelliMath</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+    <h2 class="text-2xl font-bold mb-6 text-center">Welcome Back</h2>
+    <form id="loginForm" class="space-y-4">
+      <input type="text" name="username" placeholder="Username" required class="w-full border p-2 rounded" />
+      <input type="password" name="password" placeholder="Password" required class="w-full border p-2 rounded" />
+      <button type="submit" class="bg-blue-600 text-white py-2 w-full rounded hover:bg-blue-700">Login</button>
+    </form>
+
+    <p class="text-center mt-4 text-sm">
+      No account? <a href="signup.html" class="text-blue-600 hover:underline">Sign up</a>
+    </p>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const username = form.username.value;
+      const password = form.password.value;
+
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+
+      if (storedUser && storedUser.username === username && storedUser.password === password) {
+        localStorage.setItem('loggedInUser', username);
+        localStorage.setItem('role', storedUser.role);
+
+        alert('✅ Login successful!');
+
+        // Redirect based on role
+        if (storedUser.role === 'admin') {
+          window.location.href = 'dashboard-admin.html';
+        } else {
+          window.location.href = 'dashboard-student.html';
+        }
+      } else {
+        alert('❌ Invalid username or password.');
+      }
+    });
+  </script>
+</body>
+</html>

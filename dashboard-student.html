@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Dashboard – IntelliMath</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    .sidebar {
+      transition: transform 0.3s ease;
+    }
+    .sidebar-hidden {
+      transform: translateX(-100%);
+    }
+    .sidebar-visible {
+      transform: translateX(0);
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex relative font-sans" style="background-color: black;">
+
+  <!-- ☰ Hamburger (Mobile) -->
+  <button id="menuBtn" class="absolute top-10 left-6 text-3xl z-50 text-black-800 md:hidden">☰</button>
+
+  <!-- 🔵 Sidebar Navigation -->
+  <aside id="sidebar" class="sidebar sidebar-hidden fixed md:static top-0 left-0 h-full w-64 bg-blue-800 text-white flex flex-col p-6 space-y-6 z-40 shadow-xl">
+    <h2 class="text-2xl font-bold mb-6">IntelliMath</h2>
+
+    <nav class="flex flex-col gap-4 text-lg">
+      <a href="dashboard-student.html" class="hover:text-yellow-300">🏠 Dashboard</a>
+      <a href="lessons.html" class="hover:text-yellow-300">📘 Lessons</a>
+      <a href="quiz.html" class="hover:text-yellow-300">📝 Quizzes</a>
+      <a href="ai-chat.html" class="hover:text-yellow-300">🤖 AI Tutor</a>
+      <a href="gamification.html" class="hover:text-yellow-300">🎖️ Gamification</a>
+      <a href="#" onclick="logout()" class="text-red-300 hover:text-red-100">🚪 Logout</a>
+    </nav>
+  </aside>
+
+  <!-- 🟢 Main Content Area -->
+  <main class="flex-1 p-6 md:ml-64 transition-all duration-300">
+
+    <!-- 👋 Welcome Message --> 
+    <div class="bg-white shadow-md rounded-lg p-6 mb-6 text-center" style="background-color: gray;">
+      <h1 id="welcomeText" class="text-3xl font-bold">Hi 👋</h1>
+      <p class="mt-1">Welcome to your learning dashboard</p>
+    </div>
+
+    <!-- 📊 Progress Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+      <div class="bg-white p-6 rounded-lg shadow-md text-center" style="background-color: #456882;">
+        <h3 class="text-sm mb-1" style="color: rgb(17, 17, 17)
+        ;">Lessons Completed</h3>
+        <p id="completedCount" class="text-2xl font-bold text-blue-600">0</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md text-center" style="background-color: #eee9f4;">
+        <h3 class="text-sm  mb-1">Last Viewed</h3>
+        <p id="lastLesson" class="text-xl font-semibold text-blue-500">—</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow-md text-center" style="background-color: #d0cdd6;">
+        <h3 class="text-sm mb-1" style="color: #141315;">Current Level</h3>
+        <p id="studentLevel" class="text-lg font-semibold text-green-600">-</p>
+      </div>
+    </div>
+
+    <!-- 🚀 Quick Access Buttons -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <a href="lessons.html" class="bg-yellow-100 hover:bg-yellow-200 transition p-6 rounded-lg shadow flex items-center gap-4">
+        <span class="text-3xl">📘</span>
+        <div>
+          <h3 class="text-xl font-semibold">Continue Learning</h3>
+          <p class="text-sm text-gray-600">Explore lessons & videos</p>
+        </div>
+      </a>
+
+      <a href="quiz.html" class="bg-blue-100 hover:bg-blue-200 transition p-6 rounded-lg shadow flex items-center gap-4">
+        <span class="text-3xl">📝</span>
+        <div>
+          <h3 class="text-xl font-semibold">Take a Quiz</h3>
+          <p class="text-sm text-gray-600">Test your understanding</p>
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <!-- 🧠 Scripts -->
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const menuBtn = document.getElementById("menuBtn");
+
+    menuBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("sidebar-hidden");
+      sidebar.classList.toggle("sidebar-visible");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (
+        !sidebar.contains(e.target) &&
+        !menuBtn.contains(e.target) &&
+        sidebar.classList.contains("sidebar-visible")
+      ) {
+        sidebar.classList.remove("sidebar-visible");
+        sidebar.classList.add("sidebar-hidden");
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const username = localStorage.getItem("username") || "Student";
+      document.getElementById("welcomeText").textContent = `Hi ${username} 👋`;
+
+      const completed = JSON.parse(localStorage.getItem("completedLessons")) || [];
+      document.getElementById("completedCount").textContent = completed.length;
+
+      const lastLesson = completed[completed.length - 1] || "—";
+      document.getElementById("lastLesson").textContent = lastLesson;
+
+      const level = localStorage.getItem("lessonLevel") || "-";
+      document.getElementById("studentLevel").textContent = level;
+    });
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

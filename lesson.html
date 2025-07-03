@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lesson – IntelliMath</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+
+  <!-- 🔼 Back & Welcome -->
+  <div class="flex justify-between items-center mb-4">
+    <a href="lessons.html" class="text-blue-600 hover:underline">← Back to Lessons</a>
+    <h2 id="welcomeText" class="text-lg font-semibold text-gray-700">Hi Student 👋</h2>
+  </div>
+
+  <!-- 🧠 Lesson Title -->
+  <h1 class="text-2xl font-bold text-blue-800 mb-4" id="lessonTitle">Lesson Title</h1>
+
+  <!-- 🎥 Video Section -->
+  <div class="rounded overflow-hidden shadow mb-6">
+    <iframe id="lessonVideo" class="w-full h-64 md:h-96" src="" frameborder="0" allowfullscreen></iframe>
+  </div>
+
+  <!-- 📄 Lesson Body -->
+  <div class="bg-white p-6 rounded shadow mb-6">
+    <h3 class="text-xl font-semibold mb-2 text-gray-800">Lesson Overview</h3>
+    <p id="lessonContent" class="text-gray-700 leading-relaxed">
+      Loading lesson content...
+    </p>
+  </div>
+
+  <!-- 📝 Take Quiz -->
+  <a id="quizBtn" href="#" class="inline-block bg-blue-600 text-white px-5 py-3 rounded hover:bg-blue-700">
+    Take Quiz →
+  </a>
+
+  <!-- 🧾 Script -->
+  <script>
+    // Set welcome text from localStorage
+    const username = localStorage.getItem("username") || "Student";
+    document.getElementById("welcomeText").textContent = `Hi ${username} 👋`;
+
+    // Dummy lesson data
+    const lessons = {
+      1: {
+        title: "Algebra Basics",
+        video: "https://www.youtube.com/embed/5ATYlI5Ugr4", // replace with own or public domain link
+        content: "In this lesson, you'll learn about variables, expressions, and how to simplify basic algebraic expressions."
+      },
+      2: {
+        title: "Fractions & Decimals",
+        video: "https://www.youtube.com/embed/yPyaW1XRUe0",
+        content: "This lesson covers converting fractions to decimals, simplifying, and performing operations with them."
+      }
+      // Add more as needed...
+    };
+
+    // Get lesson ID from query string
+    const params = new URLSearchParams(window.location.search);
+    const lessonId = params.get("id") || 1; // Default to 1
+
+    // Load content
+    const lesson = lessons[lessonId];
+
+    if (lesson) {
+      document.getElementById("lessonTitle").textContent = lesson.title;
+      document.getElementById("lessonVideo").src = lesson.video;
+      document.getElementById("lessonContent").textContent = lesson.content;
+
+      // Store current lesson in localStorage
+      localStorage.setItem("lessonLevel", `Level ${lessonId}`);
+      const completed = JSON.parse(localStorage.getItem("completedLessons") || "[]");
+      if (!completed.includes(lesson.title)) {
+        completed.push(lesson.title);
+        localStorage.setItem("completedLessons", JSON.stringify(completed));
+      }
+
+      // Set quiz link
+      document.getElementById("quizBtn").href = `quiz.html?lessonId=${lessonId}`;
+    } else {
+      document.getElementById("lessonContent").textContent = "Lesson not found.";
+    }
+  </script>
+
+</body>
+</html>

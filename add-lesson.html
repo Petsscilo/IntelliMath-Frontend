@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Lesson – IntelliMath</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <script defer src="script.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+  <!-- 🔘 Add Lesson Container -->
+  <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-xl space-y-6" style="background-color: black;">
+    <!-- 🔷 Header -->
+    <div class="text-center">
+      <h2 class="text-2xl font-bold text-blue-700">➕ Add New Lesson</h2>
+      <p class="text-gray-500 text-sm mt-1">Enter lesson details to add it to the curriculum</p>
+    </div>
+
+    <!-- 📝 Form -->
+    <form id="addLessonForm" class="space-y-4">
+      <!-- 🔤 Title -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Lesson Title</label>
+        <input type="text" name="title" required placeholder="e.g. Algebra Basics"
+          class="w-full border border-gray-300 rounded px-4 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-300" />
+      </div>
+
+      <!-- 📚 Level -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Lesson Level</label>
+        <select name="level" required
+          class="w-full border border-gray-300 rounded px-4 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-300">
+          <option value="">Select Level</option>
+          <option value="KS3">KS3</option>
+          <option value="GCSE">GCSE</option>
+          <option value="A-Level">A-Level</option>
+        </select>
+      </div>
+
+      <!-- 📄 Description -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Description</label>
+        <textarea name="description" rows="4" placeholder="Brief description of the lesson..."
+          class="w-full border border-gray-300 rounded px-4 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-300"></textarea>
+      </div>
+
+      <!-- 🎥 Video URL -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Video URL</label>
+        <input type="url" name="video_url" required placeholder="e.g. https://youtube.com/embed/..."
+          class="w-full border border-gray-300 rounded px-4 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-300" />
+      </div>
+
+      <!-- ✅ Submit -->
+      <button type="submit"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition">
+        Save Lesson
+      </button>
+    </form>
+
+    <!-- 🔙 Back Link -->
+    <div class="text-center pt-4">
+      <a href="dashboard-admin.html" class="text-sm text-blue-600 hover:underline">← Back to Dashboard</a>
+    </div>
+  </div>
+
+  <!-- ⚙️ JavaScript -->
+  <script>
+    const form = document.getElementById('addLessonForm');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Extract form data
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      // TODO: Replace with actual API call later
+      console.log("Lesson Data Submitted:", data);
+      alert("✅ Lesson submitted! (Mock Only)");
+
+      form.reset();
+    });
+  </script>
+</body>
+</html>

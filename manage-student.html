@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manage Students – IntelliMath</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100 min-h-screen py-8 px-4">
+
+  <!-- 🔙 Back Link -->
+  <div class="mb-4">
+    <a href="dashboard-admin.html" class="text-blue-600 hover:underline">← Back to Admin Dashboard</a>
+  </div>
+
+  <!-- 🧑‍🎓 Header -->
+  <div class="max-w-5xl mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Manage Students</h2>
+
+    <!-- 🔍 Search -->
+    <input type="text" id="searchInput" placeholder="Search by name or email..."
+      class="w-full border border-gray-300 rounded px-4 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+    <!-- 📋 Student Table -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full table-auto border-collapse">
+        <thead class="bg-blue-600 text-white">
+          <tr>
+            <th class="py-2 px-4 text-left">#</th>
+            <th class="py-2 px-4 text-left">Full Name</th>
+            <th class="py-2 px-4 text-left">Username</th>
+            <th class="py-2 px-4 text-left">Email</th>
+            <th class="py-2 px-4 text-left">Level</th>
+            <th class="py-2 px-4 text-left">Age</th>
+          </tr>
+        </thead>
+        <tbody id="studentTableBody" class="bg-white divide-y divide-gray-100">
+          <tr>
+            <td colspan="6" class="text-center py-4 text-gray-400">Loading students...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 🧠 Script -->
+  <script>
+    const token = localStorage.getItem("token");
+    const tableBody = document.getElementById("studentTableBody");
+    const searchInput = document.getElementById("searchInput");
+    let students = [];
+
+    async function loadStudents() {
+      try {
+        const res = await fetch("http://localhost:8000/api/students/", {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        students = await res.json();
+        displayStudents(students);
+      } catch (err) {
+        tableBody.innerHTML = `<tr><td colspan="6" class="text-center text-red-500 py-4">⚠️ Error loading students.</td></tr>`;
+      }
+    }
+
+    function displayStudents(list) {
+      if (!Array.isArray(list) || list.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-gray-400">No students found.</td></tr>`;
+        return;
+      }
+
+      tableBody.innerHTML = "";
+      list.forEach((student, index) => {
+        const row = document.createElement("tr");
+        row.classList.add("hover:bg-gray-50");
+
+        row.innerHTML = `
+          <td class="py-2 px-4">${index + 1}</td>
+          <td class="py-2 px-4">${student.full_name || "-"}</td>
+          <td class="py-2 px-4">${student.username}</td>
+          <td class="py-2 px-4">${student.email}</td>
+          <td class="py-2 px-4">${student.current_level}</td>
+          <td class="py-2 px-4">${student.age}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // 🔍 Live Search
+    searchInput.addEventListener("input", (e) => {
+      const term = e.target.value.toLowerCase();
+      const filtered = students.filter(s =>
+        s.full_name?.toLowerCase().includes(term) ||
+        s.email?.toLowerCase().includes(term)
+      );
+      displayStudents(filtered);
+    });
+
+    // Load data
+    loadStudents();
+  </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Reports – IntelliMath</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+
+  <!-- 🔵 Container -->
+  <div class="max-w-6xl mx-auto bg-white p-6 rounded shadow">
+
+    <!-- 🔙 Header -->
+    <header class="bg-blue-700 text-white py-4 px-6 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">📊 IntelliMath – Admin Reports</h1>
+      <div class="space-x-4">
+        <a href="dashboard-admin.html" class="hover:underline">🏠 Dashboard</a>
+        <button onclick="logout()" class="text-red-300 hover:text-red-100">🚪 Logout</button>
+      </div>
+    </header>
+
+    <!-- 📄 Report Summary -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div class="bg-blue-100 p-4 rounded shadow text-center">
+        <h3 class="text-gray-700 text-sm">Total Students</h3>
+        <p class="text-xl font-bold text-blue-800" id="totalStudents">0</p>
+      </div>
+      <div class="bg-green-100 p-4 rounded shadow text-center">
+        <h3 class="text-gray-700 text-sm">Total Quizzes Submitted</h3>
+        <p class="text-xl font-bold text-green-800" id="totalQuizzes">0</p>
+      </div>
+      <div class="bg-yellow-100 p-4 rounded shadow text-center">
+        <h3 class="text-gray-700 text-sm">Average Score</h3>
+        <p class="text-xl font-bold text-yellow-800" id="avgScore">-</p>
+      </div>
+    </div>
+
+    <!-- 📥 Export Buttons -->
+    <div class="flex gap-4 mb-8">
+      <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Download CSV</button>
+      <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Download PDF</button>
+    </div>
+
+    <!-- 📈 Charts -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-white p-4 border rounded shadow">
+        <h2 class="text-xl font-bold mb-4">Average Student Quiz Scores</h2>
+        <canvas id="barChart" height="200"></canvas>
+      </div>
+      <div class="bg-white p-4 border rounded shadow">
+        <h3 class="text-lg font-semibold mb-2">Student Activity</h3>
+        <canvas id="lineChart" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🧠 Report Logic -->
+  <script>
+    // Replace these with real backend data
+    const sampleData = {
+      students: 48,
+      quizzes: 124,
+      avgScore: 82,
+      barLabels: ["John", "Amaka", "Ali", "Ngozi", "Lucas"],
+      barScores: [80, 85, 70, 90, 76],
+      lineLabels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+      lineScores: [5, 10, 8, 15, 12],
+    };
+
+    // Fill counts
+    document.getElementById("totalStudents").textContent = sampleData.students;
+    document.getElementById("totalQuizzes").textContent = sampleData.quizzes;
+    document.getElementById("avgScore").textContent = `${sampleData.avgScore}%`;
+
+    // Bar Chart
+    new Chart(document.getElementById("barChart").getContext("2d"), {
+      type: 'bar',
+      data: {
+        labels: sampleData.barLabels,
+        datasets: [{
+          label: 'Scores',
+          data: sampleData.barScores,
+          backgroundColor: '#3b82f6'
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100
+          }
+        }
+      }
+    });
+
+    // Line Chart
+    new Chart(document.getElementById("lineChart").getContext("2d"), {
+      type: 'line',
+      data: {
+        labels: sampleData.lineLabels,
+        datasets: [{
+          label: 'Lessons Viewed',
+          data: sampleData.lineScores,
+          fill: false,
+          borderColor: '#10b981',
+          tension: 0.1
+        }]
+      },
+      options: {
+        responsive: true
+      }
+    });
+  </script>
+
+</body>
+</html>

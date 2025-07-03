@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz – IntelliMath</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50 min-h-screen p-6">
+
+  <!-- 🧭 Header with Username -->
+  <div class="flex justify-between items-center mb-4">
+    <a href="lessons.html" class="text-blue-600 hover:underline">← Back to Lessons</a>
+    <h2 id="welcomeText" class="text-lg font-semibold text-gray-700">Hi Student 👋</h2>
+  </div>
+
+  <!-- 📝 Quiz Title -->
+  <h1 id="quizTitle" class="text-2xl font-bold text-blue-800 mb-6">Quiz</h1>
+
+  <!-- ❓ Quiz Container -->
+  <form id="quizForm" class="bg-white p-6 rounded shadow max-w-2xl mx-auto space-y-6">
+    <!-- Questions will be loaded here -->
+  </form>
+
+  <!-- 🧾 Script -->
+  <script>
+    const username = localStorage.getItem("username") || "Student";
+    document.getElementById("welcomeText").textContent = `Hi ${username} 👋`;
+
+    // Sample Quiz Data
+    const quizzes = {
+      1: [
+        {
+          question: "What is 2 + 2?",
+          options: ["2", "3", "4", "5"],
+          answer: "4"
+        },
+        {
+          question: "Simplify: 3x + 2x",
+          options: ["5", "3x", "2x", "5x"],
+          answer: "5x"
+        }
+      ],
+      2: [
+        {
+          question: "What is 0.75 as a fraction?",
+          options: ["3/4", "1/4", "7/10", "2/3"],
+          answer: "3/4"
+        },
+        {
+          question: "Which is greater: 0.5 or 1/4?",
+          options: ["0.5", "1/4", "Equal", "Can't say"],
+          answer: "0.5"
+        }
+      ]
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const lessonId = params.get("lessonId") || 1;
+
+    const quiz = quizzes[lessonId];
+
+    const quizForm = document.getElementById("quizForm");
+
+    if (!quiz) {
+      quizForm.innerHTML = "<p>No quiz found for this lesson.</p>";
+    } else {
+      document.getElementById("quizTitle").textContent = `Lesson ${lessonId} Quiz`;
+
+      quiz.forEach((q, index) => {
+        const block = document.createElement("div");
+
+        block.innerHTML = `
+          <div>
+            <p class="font-semibold text-gray-800 mb-2">${index + 1}. ${q.question}</p>
+            <div class="space-y-2">
+              ${q.options.map(opt => `
+                <label class="flex items-center gap-2">
+                  <input type="radio" name="q${index}" value="${opt}" class="form-radio text-blue-600" />
+                  <span>${opt}</span>
+                </label>
+              `).join("")}
+            </div>
+          </div>
+        `;
+        quizForm.appendChild(block);
+      });
+
+      const submitBtn = document.createElement("button");
+      submitBtn.type = "submit";
+      submitBtn.textContent = "Submit Quiz";
+      submitBtn.className = "mt-6 w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700";
+
+      quizForm.appendChild(submitBtn);
+    }
+
+    // Handle submit
+    quizForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      let score = 0;
+
+      quiz.forEach((q, i) => {
+        const selected = quizForm.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && selected.value === q.answer) {
+          score++;
+        }
+      });
+
+      // Score stored in localStorage frontend for now
+      localStorage.setItem("lastScore", score);
+
+
+      alert(`✅ You scored ${score} out of ${quiz.length}`);
+      window.location.href = "dashboard-student.html";
+    });
+
+    // Here's how to track the quiz result in localStorage and show it on the dashboard—step-by-step.
+    document.getElementById("quizForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+    
+        let score = 0;
+        const totalQuestions = document.querySelectorAll(".question").length;
+    
+        // Calculate score (basic example: correct options have value="correct")
+        document.querySelectorAll(".question").forEach((q) => {
+          const selected = q.querySelector("input[type='radio']:checked");
+          if (selected && selected.value === "correct") {
+            score++;
+          }
+        });
+    
+        // Save result in localStorage
+        const completed = JSON.parse(localStorage.getItem("completedLessons")) || [];
+        const lastLessonTitle = document.getElementById("lessonTitle").textContent || "Unknown Lesson";
+    
+        if (!completed.includes(lastLessonTitle)) {
+          completed.push(lastLessonTitle);
+        }
+    
+        localStorage.setItem("completedLessons", JSON.stringify(completed));
+        localStorage.setItem("lastScore", score);
+        localStorage.setItem("totalQuestions", totalQuestions);
+    
+        alert(`✅ You scored ${score} out of ${totalQuestions}`);
+        window.location.href = "dashboard-student.html";
+      });
+  </script>
+</body>
+</html>
