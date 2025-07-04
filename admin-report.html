@@ -17,7 +17,6 @@
       <h1 class="text-2xl font-bold">📊 IntelliMath – Admin Reports</h1>
       <div class="space-x-4">
         <a href="dashboard-admin.html" class="hover:underline">🏠 Dashboard</a>
-        <button onclick="logout()" class="text-red-300 hover:text-red-100">🚪 Logout</button>
       </div>
     </header>
 
@@ -113,6 +112,16 @@
         responsive: true
       }
     });
+
+    // Logout Functionality
+    function logout() {
+      // Clear session or local storage (if used for authentication)
+      localStorage.clear();
+      sessionStorage.clear();
+
+      // Redirect to login page
+      window.location.href = "login.html";
+    }
   </script>
 
 </body>
